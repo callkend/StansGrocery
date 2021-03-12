@@ -1,8 +1,39 @@
 ﻿Public Class StansGroceryForm
     Dim temp() As String
+    Dim numberOfAisles As Integer = 0
+    Dim catergories(0) As String
+    Dim splitter As String
     Private Sub StansGroceryForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         ReadEntireFile("")
-        temp = Split(My.Resources.Grocery, vbNewLine)
+        temp = Split(My.Resources.Grocery, vbLf)
+        For i = 0 To temp.Length - 1
+            Try
+                splitter += Mid(temp(i), InStrRev(temp(i), "CAT") + 3, temp(i).Length - (InStrRev(temp(i), "CAT") + 3)) + ","
+                If numberOfAisles < CInt(Mid(temp(i), InStrRev(temp(i), "LOC") + 3, 1)) Then
+                    numberOfAisles = CInt(Mid(temp(i), InStrRev(temp(i), "LOC") + 3, 1))
+                ElseIf numberOfAisles < CInt(Mid(temp(i), InStrRev(temp(i), "LOC") + 3, 2)) Then
+                    numberOfAisles = CInt(Mid(temp(i), InStrRev(temp(i), "LOC") + 3, 2))
+                End If
+
+            Catch ex As Exception
+
+            End Try
+
+        Next
+
+        temp = Split(splitter, ",")
+        Dim arrayScanner As String = ""
+        Dim pointer As Integer = 0
+
+        For i = 0 To temp.Length - 1
+
+            If temp(i) <> arrayScanner And temp(i) <> "" Then
+                arrayScanner = temp(i)
+                ReDim Preserve catergories(pointer)
+                catergories(pointer) = temp(i)
+                pointer += 1
+            End If
+        Next
     End Sub
 
     Sub ReadEntireFile(grabItem As String)
@@ -93,7 +124,21 @@
         If FilterByAisleRadioButton.Checked = False Then
             Return
         Else
+            FilterComboBox.Items.Clear()
+            For i = 0 To numberOfAisles
+                FilterComboBox.Items.Add(i)
+            Next
+        End If
+    End Sub
 
+    Private Sub FilterByCategoryRadioButton_CheckedChanged(sender As Object, e As EventArgs) Handles FilterByCategoryRadioButton.CheckedChanged
+        If FilterByCategoryRadioButton.Checked = False Then
+            Return
+        Else
+            FilterComboBox.Items.Clear()
+            For i = 0 To catergories.Length - 1
+                FilterComboBox.Items.Add(catergories(i))
+            Next
         End If
     End Sub
 End Class
