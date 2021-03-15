@@ -40,6 +40,16 @@
 
         Dim scan As String = "nothing"
         Dim itemInfo As String
+
+        temp = Split(My.Resources.Grocery, vbLf)
+
+        For i = 0 To temp.Length - 1
+            If InStrRev(temp(i), grabItem) > 0 Then
+                scan = Mid(temp(i), InStrRev(temp(i), "ITM") + 3, InStr(temp(i), ",") - 1)
+                FilterComboBox.Items.Add(scan)
+            End If
+        Next
+
         If grabItem = "" Then
             FilterComboBox.Items.Add("Show All")
             Try
@@ -107,9 +117,11 @@
         If itemSelect = "Show All" Then
             FilterByAisleRadioButton.Checked = False
             FilterByCategoryRadioButton.Checked = False
+            FilterComboBox.Items.Clear()
             ReadEntireFile("")
+        Else
+            ReadEntireFile(itemSelect)
         End If
-        ReadEntireFile(itemSelect)
 
     End Sub
 
@@ -125,6 +137,7 @@
             Return
         Else
             FilterComboBox.Items.Clear()
+            FilterComboBox.Items.Add("Show All")
             For i = 0 To numberOfAisles
                 FilterComboBox.Items.Add(i)
             Next
@@ -136,6 +149,7 @@
             Return
         Else
             FilterComboBox.Items.Clear()
+            FilterComboBox.Items.Add("Show All")
             For i = 0 To catergories.Length - 1
                 FilterComboBox.Items.Add(catergories(i))
             Next
