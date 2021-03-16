@@ -4,7 +4,7 @@
     Dim catergories(0) As String
     Dim splitter As String
     Private Sub StansGroceryForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        ReadEntireFile("")
+        ReadEntireFile("", False)
         temp = Split(My.Resources.Grocery, vbLf)
         For i = 0 To temp.Length - 1
             Try
@@ -36,19 +36,13 @@
         Next
     End Sub
 
-    Sub ReadEntireFile(grabItem As String)
+    Sub ReadEntireFile(grabItem As String, filter As Boolean)
 
         Dim scan As String = "nothing"
         Dim itemInfo As String
 
         temp = Split(My.Resources.Grocery, vbLf)
 
-        For i = 0 To temp.Length - 1
-            If InStrRev(temp(i), grabItem) > 0 Then
-                scan = Mid(temp(i), InStrRev(temp(i), "ITM") + 3, InStr(temp(i), ",") - 1)
-                FilterComboBox.Items.Add(scan)
-            End If
-        Next
 
         If grabItem = "" Then
             FilterComboBox.Items.Add("Show All")
@@ -70,6 +64,14 @@
 
             End Try
         Else
+            'Displays filtered items
+            DisplayListBox.Items.Clear()
+            For i = 0 To temp.Length - 1
+                If InStrRev(temp(i), grabItem) > 0 Then
+                    scan = Mid(temp(i), InStrRev(temp(i), "ITM") + 3, InStr(temp(i), ",") - 8)
+                    DisplayListBox.Items.Add(scan)
+                End If
+            Next
             Try
                 FileOpen(1, "Grocery.txt", OpenMode.Input)
                 If grabItem = "Zzz" Then
@@ -77,7 +79,7 @@
                 End If
                 Do Until EOF(1)
                     Input(1, scan)
-                    If (InStrRev(scan, grabItem) >= 1) Then
+                    If (InStrRev(scan, grabItem) >= 1) And filter = False Then
                         scan = Replace(scan, "$$ITM", "")
                         scan = Replace(scan, vbLf, "")
                         scan = Replace(scan, """", "")
@@ -91,7 +93,7 @@
                         DisplayLabel.Text = (itemInfo)
                         FileClose(1)
                         Return
-                    Else
+                    ElseIf filter = False Then
                         DisplayLabel.Text = $"Sorry no matches for {grabItem}"
                     End If
 
@@ -107,7 +109,7 @@
     Private Sub DisplayListBox_SelectedIndexChanged(sender As Object, e As EventArgs) Handles DisplayListBox.SelectedIndexChanged
         Dim itemSelect As String = DisplayListBox.GetItemText(DisplayListBox.SelectedItem)
         itemSelect = Mid(itemSelect, 1, Len(itemSelect))
-        ReadEntireFile(itemSelect)
+        ReadEntireFile(itemSelect, False)
 
     End Sub
 
@@ -118,9 +120,11 @@
             FilterByAisleRadioButton.Checked = False
             FilterByCategoryRadioButton.Checked = False
             FilterComboBox.Items.Clear()
-            ReadEntireFile("")
-        Else
-            ReadEntireFile(itemSelect)
+            ReadEntireFile("", False)
+        ElseIf FilterByAisleRadioButton.Checked = False And FilterByCategoryRadioButton.Checked = False Then
+            ReadEntireFile(itemSelect, False)
+        ElseIf FilterByAisleRadioButton.Checked = True Or FilterByCategoryRadioButton.Checked = True Then
+            ReadEntireFile(itemSelect, True)
         End If
 
     End Sub
@@ -129,7 +133,7 @@
         Dim itemSelect As String = SearchTextBox.Text.Substring(0, 1).ToUpper() +
             SearchTextBox.Text.Substring(1)
         itemSelect = Mid(itemSelect, 1, Len(itemSelect))
-        ReadEntireFile(itemSelect)
+        ReadEntireFile(itemSelect, False)
     End Sub
 
     Private Sub FilterByAisleRadioButton_CheckedChanged(sender As Object, e As EventArgs) Handles FilterByAisleRadioButton.CheckedChanged
