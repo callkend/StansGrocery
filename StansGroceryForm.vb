@@ -2,7 +2,7 @@
 'RCET0265
 'Spring 2021
 'Stans Grocery
-'
+'https://github.com/callkend/StansGrocery.git
 
 Option Explicit On
 Option Strict On
@@ -12,6 +12,8 @@ Public Class StansGroceryForm
     Dim numberOfAisles As Integer = 0
     Dim catergories(0) As String
     Dim splitter As String
+
+    'Handles the reading the file, and sets tooltips on startup.
     Private Sub StansGroceryForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         ReadEntireFile("", False)
         temp = Split(My.Resources.Grocery, vbLf)
@@ -52,6 +54,7 @@ Public Class StansGroceryForm
         Next
     End Sub
 
+    'Reads the info from the file
     Sub ReadEntireFile(grabItem As String, filter As Boolean)
 
         Dim scan As String = "nothing"
@@ -59,7 +62,7 @@ Public Class StansGroceryForm
 
         temp = Split(My.Resources.Grocery, vbLf)
 
-
+        'Fills the display box with all items
         If grabItem = "" Then
             FilterComboBox.Items.Add("Show All")
             Try
@@ -91,9 +94,12 @@ Public Class StansGroceryForm
         Else
             Try
                 FileOpen(1, "Grocery.txt", OpenMode.Input)
+
+                'Cloes program if zzz is searched
                 If grabItem = "Zzz" Then
                     Me.Close()
                 End If
+                'Grabs Selected Item and tells user its information
                 Do Until EOF(1)
                     Input(1, scan)
                     If (InStrRev(scan, grabItem) >= 1) And filter = False Then
@@ -123,6 +129,7 @@ Public Class StansGroceryForm
 
     End Sub
 
+    'Handles item being selected in the display list box
     Private Sub DisplayListBox_SelectedIndexChanged(sender As Object, e As EventArgs) Handles DisplayListBox.SelectedIndexChanged
         Dim itemSelect As String = DisplayListBox.GetItemText(DisplayListBox.SelectedItem)
         itemSelect = Mid(itemSelect, 1, Len(itemSelect))
@@ -130,14 +137,18 @@ Public Class StansGroceryForm
 
     End Sub
 
+    'Handles item being selected in the display list box
     Private Sub ComboBox1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles FilterComboBox.SelectedIndexChanged
         Dim itemSelect As String = FilterComboBox.GetItemText(FilterComboBox.SelectedItem)
         itemSelect = Mid(itemSelect, 1, Len(itemSelect))
+        'Turns off filters on Combobox
         If itemSelect = "Show All" Then
             FilterByAisleRadioButton.Checked = False
             FilterByCategoryRadioButton.Checked = False
             FilterComboBox.Items.Clear()
             ReadEntireFile("", False)
+
+            'Checks to see if a filter has been selected
         ElseIf FilterByAisleRadioButton.Checked = False And FilterByCategoryRadioButton.Checked = False Then
             ReadEntireFile(itemSelect, False)
         ElseIf FilterByAisleRadioButton.Checked = True Or FilterByCategoryRadioButton.Checked = True Then
@@ -146,6 +157,7 @@ Public Class StansGroceryForm
 
     End Sub
 
+    'Searches for the item in the SearchTextBox
     Private Sub SearchButton_Click(sender As Object, e As EventArgs) Handles SearchButton.Click, SearchToolStripMenuItem.Click, SearchToolStripMenuItem1.Click
         Dim itemSelect As String
         Try
@@ -159,6 +171,7 @@ Public Class StansGroceryForm
         ReadEntireFile(itemSelect, False)
     End Sub
 
+    'Displays Aisles to search in ComboBox
     Private Sub FilterByAisleRadioButton_CheckedChanged(sender As Object, e As EventArgs) Handles FilterByAisleRadioButton.CheckedChanged
         If FilterByAisleRadioButton.Checked = False Then
             Return
@@ -171,6 +184,7 @@ Public Class StansGroceryForm
         End If
     End Sub
 
+    'Displays Catergory to search in ComboBox
     Private Sub FilterByCategoryRadioButton_CheckedChanged(sender As Object, e As EventArgs) Handles FilterByCategoryRadioButton.CheckedChanged
         If FilterByCategoryRadioButton.Checked = False Then
             Return
@@ -183,6 +197,7 @@ Public Class StansGroceryForm
         End If
     End Sub
 
+    'Handles Right click for the Context Menu
     Private Sub Mouse_Click(sender As Object, e As MouseEventArgs) Handles Me.MouseDown
         Dim mousePosition As Point = New Point(e.X + Me.Location.X, e.Y + Me.Location.Y)
 
@@ -191,6 +206,7 @@ Public Class StansGroceryForm
         End If
     End Sub
 
+    'Handles if exit is clicked in top menu
     Private Sub ExitToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ExitToolStripMenuItem.Click
         Me.Close()
     End Sub
