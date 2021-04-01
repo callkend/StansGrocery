@@ -1,4 +1,13 @@
-﻿Public Class StansGroceryForm
+﻿'Kendall Callister
+'RCET0265
+'Spring 2021
+'Stans Grocery
+'
+
+Option Explicit On
+Option Strict On
+
+Public Class StansGroceryForm
     Dim temp() As String
     Dim numberOfAisles As Integer = 0
     Dim catergories(0) As String
@@ -18,6 +27,13 @@
             Catch ex As Exception
 
             End Try
+            MainToolTip.SetToolTip(SearchTextBox, "Type in the desired item")
+            MainToolTip.SetToolTip(SearchButton, "Search for Item")
+            MainToolTip.SetToolTip(FilterByAisleRadioButton, "Filters Items by Aisle")
+            MainToolTip.SetToolTip(FilterByCategoryRadioButton, "Filter Items by Category")
+            MainToolTip.SetToolTip(FilterComboBox, "Select Aisle or Category to Search")
+            MainToolTip.SetToolTip(DisplayListBox, "Displays Filtered Items to pick from")
+            MainToolTip.SetToolTip(DisplayLabel, "Displays Items information")
 
         Next
 
@@ -63,7 +79,7 @@
             Catch ex As System.IO.FileNotFoundException
 
             End Try
-        Else
+        ElseIf filter Then
             'Displays filtered items
             DisplayListBox.Items.Clear()
             For i = 0 To temp.Length - 1
@@ -72,6 +88,7 @@
                     DisplayListBox.Items.Add(scan)
                 End If
             Next
+        Else
             Try
                 FileOpen(1, "Grocery.txt", OpenMode.Input)
                 If grabItem = "Zzz" Then
@@ -129,9 +146,15 @@
 
     End Sub
 
-    Private Sub SearchButton_Click(sender As Object, e As EventArgs) Handles SearchButton.Click
-        Dim itemSelect As String = SearchTextBox.Text.Substring(0, 1).ToUpper() +
+    Private Sub SearchButton_Click(sender As Object, e As EventArgs) Handles SearchButton.Click, SearchToolStripMenuItem.Click, SearchToolStripMenuItem1.Click
+        Dim itemSelect As String
+        Try
+            itemSelect = SearchTextBox.Text.Substring(0, 1).ToUpper() +
             SearchTextBox.Text.Substring(1)
+        Catch
+            MsgBox("No Search Entry")
+            Return
+        End Try
         itemSelect = Mid(itemSelect, 1, Len(itemSelect))
         ReadEntireFile(itemSelect, False)
     End Sub
@@ -159,4 +182,17 @@
             Next
         End If
     End Sub
+
+    Private Sub Mouse_Click(sender As Object, e As MouseEventArgs) Handles Me.MouseDown
+        Dim mousePosition As Point = New Point(e.X + Me.Location.X, e.Y + Me.Location.Y)
+
+        If e.Button.ToString = "Right" Then
+            ContextMenuStrip1.Show(mousePosition)
+        End If
+    End Sub
+
+    Private Sub ExitToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ExitToolStripMenuItem.Click
+        Me.Close()
+    End Sub
+
 End Class

@@ -42,6 +42,7 @@ Partial Class StansGroceryForm
         Me.ExitToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.FilterByAisleRadioButton = New System.Windows.Forms.RadioButton()
         Me.FilterByCategoryRadioButton = New System.Windows.Forms.RadioButton()
+        Me.MainToolTip = New System.Windows.Forms.ToolTip(Me.components)
         Me.TopMenuStrip.SuspendLayout()
         Me.LeftGroupBox.SuspendLayout()
         Me.ContextMenuStrip1.SuspendLayout()
@@ -259,4 +260,5 @@ Partial Class StansGroceryForm
     Friend WithEvents ExitToolStripMenuItem1 As ToolStripMenuItem
     Friend WithEvents FilterByAisleRadioButton As RadioButton
     Friend WithEvents FilterByCategoryRadioButton As RadioButton
+    Friend WithEvents MainToolTip As ToolTip
 End Class
