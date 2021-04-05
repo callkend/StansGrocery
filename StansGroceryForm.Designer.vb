@@ -24,6 +24,9 @@ Partial Class StansGroceryForm
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Me.TopMenuStrip = New System.Windows.Forms.MenuStrip()
+        Me.ContextMenuStrip1 = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.SearchToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ExitToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.FileTopMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.SearchToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ExitToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -37,19 +40,17 @@ Partial Class StansGroceryForm
         Me.SearchButton = New System.Windows.Forms.Button()
         Me.LeftGroupBox = New System.Windows.Forms.GroupBox()
         Me.DisplayLabel = New System.Windows.Forms.Label()
-        Me.ContextMenuStrip1 = New System.Windows.Forms.ContextMenuStrip(Me.components)
-        Me.SearchToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ExitToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.FilterByAisleRadioButton = New System.Windows.Forms.RadioButton()
         Me.FilterByCategoryRadioButton = New System.Windows.Forms.RadioButton()
         Me.MainToolTip = New System.Windows.Forms.ToolTip(Me.components)
         Me.TopMenuStrip.SuspendLayout()
-        Me.LeftGroupBox.SuspendLayout()
         Me.ContextMenuStrip1.SuspendLayout()
+        Me.LeftGroupBox.SuspendLayout()
         Me.SuspendLayout()
         '
         'TopMenuStrip
         '
+        Me.TopMenuStrip.ContextMenuStrip = Me.ContextMenuStrip1
         Me.TopMenuStrip.ImageScalingSize = New System.Drawing.Size(20, 20)
         Me.TopMenuStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FileTopMenuItem, Me.HelpTopMenuItem})
         Me.TopMenuStrip.Location = New System.Drawing.Point(0, 0)
@@ -57,6 +58,25 @@ Partial Class StansGroceryForm
         Me.TopMenuStrip.Size = New System.Drawing.Size(833, 28)
         Me.TopMenuStrip.TabIndex = 0
         Me.TopMenuStrip.Text = "MenuStrip1"
+        '
+        'ContextMenuStrip1
+        '
+        Me.ContextMenuStrip1.ImageScalingSize = New System.Drawing.Size(20, 20)
+        Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.SearchToolStripMenuItem1, Me.ExitToolStripMenuItem1})
+        Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
+        Me.ContextMenuStrip1.Size = New System.Drawing.Size(123, 52)
+        '
+        'SearchToolStripMenuItem1
+        '
+        Me.SearchToolStripMenuItem1.Name = "SearchToolStripMenuItem1"
+        Me.SearchToolStripMenuItem1.Size = New System.Drawing.Size(122, 24)
+        Me.SearchToolStripMenuItem1.Text = "Search"
+        '
+        'ExitToolStripMenuItem1
+        '
+        Me.ExitToolStripMenuItem1.Name = "ExitToolStripMenuItem1"
+        Me.ExitToolStripMenuItem1.Size = New System.Drawing.Size(122, 24)
+        Me.ExitToolStripMenuItem1.Text = "Exit"
         '
         'FileTopMenuItem
         '
@@ -170,25 +190,6 @@ Partial Class StansGroceryForm
         Me.DisplayLabel.Size = New System.Drawing.Size(279, 237)
         Me.DisplayLabel.TabIndex = 0
         '
-        'ContextMenuStrip1
-        '
-        Me.ContextMenuStrip1.ImageScalingSize = New System.Drawing.Size(20, 20)
-        Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.SearchToolStripMenuItem1, Me.ExitToolStripMenuItem1})
-        Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
-        Me.ContextMenuStrip1.Size = New System.Drawing.Size(123, 52)
-        '
-        'SearchToolStripMenuItem1
-        '
-        Me.SearchToolStripMenuItem1.Name = "SearchToolStripMenuItem1"
-        Me.SearchToolStripMenuItem1.Size = New System.Drawing.Size(122, 24)
-        Me.SearchToolStripMenuItem1.Text = "Search"
-        '
-        'ExitToolStripMenuItem1
-        '
-        Me.ExitToolStripMenuItem1.Name = "ExitToolStripMenuItem1"
-        Me.ExitToolStripMenuItem1.Size = New System.Drawing.Size(122, 24)
-        Me.ExitToolStripMenuItem1.Text = "Exit"
-        '
         'FilterByAisleRadioButton
         '
         Me.FilterByAisleRadioButton.AutoSize = True
@@ -217,6 +218,7 @@ Partial Class StansGroceryForm
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(833, 427)
+        Me.ContextMenuStrip = Me.ContextMenuStrip1
         Me.Controls.Add(Me.FilterByCategoryRadioButton)
         Me.Controls.Add(Me.FilterByAisleRadioButton)
         Me.Controls.Add(Me.LeftGroupBox)
@@ -234,8 +236,8 @@ Partial Class StansGroceryForm
         Me.Text = "Welcome to Stan's Grocery"
         Me.TopMenuStrip.ResumeLayout(False)
         Me.TopMenuStrip.PerformLayout()
-        Me.LeftGroupBox.ResumeLayout(False)
         Me.ContextMenuStrip1.ResumeLayout(False)
+        Me.LeftGroupBox.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
